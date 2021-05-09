@@ -1,0 +1,54 @@
+step1: 	Create a repository for project   			-->	git init
+	This will create repository 
+step2:	Add your project means files and folders in this repo.	--> 	git add .
+step3: 	commit this changes in repo				-->	git commit -m "initial commit"
+step4:  	Create an app in heroku 				-->	heroku create AppName (e.g. heroku create crudproject2021)
+step5:	Add remote 					--> 	heroku git:remote -a AppName (e.g. heroku git:remote -a crudproject2021)
+step6: 	Before pushing this on heroku first we have to check locally wether it is working or not, and for that we need one server to check
+step7: 	To check if project is working or not we have to use gunicorn server or waitress server
+	because whenever we upload django project on any server  we can not use local server 
+step8: 	install server					-->	pip install gunicorn or pip install waitress
+step9:  	Now we have to run wsgi file because this will run our project on server	-->
+							waitress-serve --port=8000 InnerProjectName.wsgi:application (CRUDProject)
+							waitress-server --port=8000 CRUDProject.wsgi:application
+	It will show you one link that is saying that the project has been serving on 8000 port, click on that link and it will show you "DisallowedHost"
+	It is saying that Invalid HTTP_HOST header. that means server don't know that it has to be run this project on this server or not so we have to tell
+	server in Allowed Host in settings file.
+step10: 	Go to settings.py file and in Allowed_Host make it all that means "*"	-->	Allowed_Host = ["*"] means all
+step11: 	Again runserver using 	waitress-server --port=8000 CRUDProject.wsgi:application
+step12: 	Create Procfile in outer project and in that file we declare web process 	
+	in Procfile			-->	web: waitress-serve --port=8000 CRUDProject.wsgi:application
+	Remeber that here we have written port no. 8000 to check this server on locally but when you deploy this on heroku you have to write variable name
+	instead of port no.
+step13: 	Run the serevr again but now with the help of Procfile		--> heroku local
+step14:	We have written all in Allowed host in settings.py file but this will make the project unsecure so that we have to give link of the project
+	that means on which url the project will run, we have to write this url in allowed host in settings.py file. but without http
+	Allowed_Host = ["crudproject2021.herokuapp.com", "localhost"]
+	this means that this project will work on this url and localhost.
+
+step15:	Make debug=False
+step16:	if we push this project with  the security key written in settings.py file but then this security key will  be visible to everyone.
+	so we have to make one config  variable and in that variable  we have to store this security key.
+	for this go to heroku then settings and in that in config Vars click on Reveal config Vars  and in key write the var name and in value copy paste this
+	security key.
+	key = secret_key,	value = django-insecure-&bdb1psf&-o0ec-t0-rm_k!xrm72p8aw(agazwa)^^h0tjnj8(       then click on add button.
+step17: 	now in settings.py file in SECRET_KEY		-->	SECRET_KEY = os.environ['secret_key']
+	we have make secret key as private by doing this.
+step18:	All static files will be collected to one folder and which is STATIC_ROOT, so we have to write this in settings.py file.
+	STATIC_ROOT = BASE_DIR / 'static' 	--> You can write any name in place of 'static'
+	'static' file will be created where all static files will be saved in this folder.
+	This all will work on heroku, we just have to mention this.  If you don't do  this then you will get an error while deploying tthe project on heroku.
+	This all will be done on heroku but for that whitenoise help heroku to do this.
+	so we have to install whitenoise in our environment
+step19:	pip install whitenoise
+step20: 	after installing this in our environment, we have to add middleware in our settings.py file, and we have to add this after security middleware
+	'whitenoise.middleware.WhitenoiseMiddleware'
+step21: 	pip freeze to see what are the requirements are available in the project
+step22:	we have to save all this requirements in one txt file called requirements		-->	pip freeze > requirements.txt
+
+
+
+
+
+
+
