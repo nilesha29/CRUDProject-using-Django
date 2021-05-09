@@ -1,4 +1,0 @@
-pip install dj-database-url==0.4.2    
-import dj_database_url
-
-https://www.geeksforgeeks.org/how-to-deploy-django-application-on-heroku/
